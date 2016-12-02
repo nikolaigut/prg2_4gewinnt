@@ -1,4 +1,6 @@
 package gameModel;
+import java.io.Serializable;
+import java.util.Observable;
 import opponent.Opponent;
 
 
@@ -8,7 +10,7 @@ import opponent.Opponent;
  * @generated
  */
 
-public class GameModel
+public class GameModel extends Observable implements Serializable
 {
 	/**
 	 * <!-- begin-user-doc -->

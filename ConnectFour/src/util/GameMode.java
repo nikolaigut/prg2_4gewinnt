@@ -7,5 +7,5 @@ package util;
  */
 public enum GameMode
 {
-	;
+	LOCAL, LOCAL_COMPUTER, NETWORK_SERVER, NETWORK_CLIENT
 }
