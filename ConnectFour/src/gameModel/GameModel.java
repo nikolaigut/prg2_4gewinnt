@@ -1,234 +1,353 @@
 package gameModel;
+
 import java.io.Serializable;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import opponent.Opponent;
-
 
 /**
  * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
+ * <!--  end-user-doc  --> @generated
  */
+public class GameModel extends Observable implements Serializable {
 
-public class GameModel extends Observable implements Serializable
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private int[][] gameMatrix;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private int[][] gameMatrix;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private Opponent playerOne;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private Opponent playerOne;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private Opponent playerTwo;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private Opponent playerTwo;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private int rowLenght;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private int rowLenght;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private int columnLenght;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private int columnLenght;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private boolean draw;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private boolean draw;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private boolean invalid;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private boolean invalid;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private boolean won;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private boolean won;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private boolean lose;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private boolean lose;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	private Opponent currentPlayer;
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    private Opponent currentPlayer;
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public GameModel() {
+        this.columnLenght = 7;
+        this.rowLenght = 6;
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public GameModel() {
-		super();
-		// TODO construct me
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public void init(Opponent playerOne, Opponent playerTwo) {
+        setChanged();
+        this.gameMatrix = new int[this.rowLenght][this.columnLenght];
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void init(Opponent playerOne, Opponent playerTwo) {
-		// TODO implement me
-	}
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void init(Opponent playerOne, Opponent playerTwo, int[][] gameMatrix, Opponent currentPlayer) {
-		// TODO implement me
-	}
+        this.currentPlayer = playerOne;
+        notifyObservers();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void insertDisc(int columnNr) {
-		// TODO implement me
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public void init(Opponent playerOne, Opponent playerTwo, int[][] gameMatrix, Opponent currentPlayer) {
+        setChanged();
+        this.gameMatrix = gameMatrix;
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void checkState() {
-		// TODO implement me
-	}
+        this.currentPlayer = currentPlayer;
+        notifyObservers();
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public int getRowToInsert(int columnNr) {
-		// TODO implement me
-		return 0;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public void insertDisc(int columnNr) {
+        try {
+            int row = getRowToInsert(columnNr);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public void changePlayer() {
-		// TODO implement me
-	}
+            setChanged();
+            this.gameMatrix[row][columnNr] = this.currentPlayer.getId();
+            notifyObservers();
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public Opponent getPlayerOne() {
-		// TODO implement me
-		return null;
-	}
+            checkState(row, columnNr);
+        } catch (Exception ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public Opponent getPlayerTwo() {
-		// TODO implement me
-		return null;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public void checkState(int row, int col) {
+        if (checkDraw()) {
+            this.draw = true;
+            return;
+        }
+        if (checkHorizontal(row) || checkVertikal(col) || checkMainDiag(row, col) || checkNextDiag(row, col)) {
+            this.won = true;
+            return;
+        }
+    }
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public int[][] getGameMatrix() {
-		// TODO implement me
-		return null;
-	}
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public int getRowToInsert(int columnNr) throws Exception {
+        int rowToInsert = -1;
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 * @ordered
-	 */
-	
-	public Opponent getCurrentPlayer() {
-		// TODO implement me
-		return null;
-	}
+        for (int i = 0; i > this.rowLenght; i++) {
+            if (this.gameMatrix[i][columnNr] != 0) {
+                rowToInsert++;
+            } else {
+                return rowToInsert;
+            }
+        }
+        if (rowToInsert >= this.rowLenght || rowToInsert < 0) {
+            throw new Exception("Unable to insert disc");
+        }
+        return rowToInsert;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public void changePlayer() {
+        setChanged();
+        if (this.currentPlayer == this.playerOne) {
+            this.currentPlayer = this.playerTwo;
+        } else {
+            this.currentPlayer = this.playerOne;
+        }
+        notifyObservers();
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public Opponent getPlayerOne() {
+        return this.playerOne;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public Opponent getPlayerTwo() {
+        return this.playerTwo;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public int[][] getGameMatrix() {
+        return this.gameMatrix;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!--  end-user-doc  --> @generated @ordered
+     */
+    public Opponent getCurrentPlayer() {
+        return this.currentPlayer;
+    }
+
+    public boolean isDraw() {
+        return draw;
+    }
+
+    public boolean isLose() {
+        return lose;
+    }
+
+    public boolean isWon() {
+        return won;
+    }
+
+    private boolean checkDraw() {
+        for (int row = 0; row < this.rowLenght; row++) {
+            for (int col = 0; col < this.columnLenght; col++) {
+                if (gameMatrix[row][col] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean checkHorizontal(int row) {
+        int counter = 0;
+        int discsInARow = 0;
+        for (int i = 0; i < this.columnLenght; i++) {
+            if (this.gameMatrix[row][i] == this.currentPlayer.getId()) {
+                counter++;
+            } else {
+                counter = 0;
+            }
+            if (counter > discsInARow) {
+                discsInARow = counter;
+            }
+        }
+
+        if (discsInARow >= 4) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkVertikal(int col) {
+        int counter = 0;
+        int discsInARow = 0;
+
+        for (int i = 0; i < this.rowLenght; i++) {
+            if (this.gameMatrix[i][col] == this.currentPlayer.getId()) {
+                counter++;
+            } else {
+                counter = 0;
+            }
+            if (counter > discsInARow) {
+                discsInARow = counter;
+            }
+        }
+
+        if (discsInARow >= 4) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkMainDiag(int row, int col) {
+        // Nach oben links suchen
+        int counter = 1;
+        int discsInARow = 1;
+        for (int i = 1; i <= (Math.min(0 + col, 0 + row)); i++) {
+            if (this.gameMatrix[row - i][col - i] == this.currentPlayer.getId()) {
+                counter += 1;
+            } else {
+                counter = 0;
+            }
+            if (counter > discsInARow) {
+                discsInARow = counter;
+            }
+        }
+
+        // Wenn gegen Links Oben keine Steinreihe gefunden wurde
+        if (counter < 1) {
+            counter = 1;
+        }
+
+        // Nach unten rechts suchen
+        for (int i = 1; i <= Math.min(6 - col, 5 - row); i++) {
+            if (this.gameMatrix[row + i][col + i] == this.currentPlayer.getId()) {
+                counter += 1;
+            } else {
+                counter = 0;
+            }
+            if (counter > discsInARow) {
+                discsInARow = counter;
+            }
+        }
+
+        if (discsInARow >= 4) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkNextDiag(int row, int col) {
+        // Nach oben rechts suchen
+        int counter = 1;
+        int discsInARow = 1;
+        for (int i = 1; i <= (Math.min(6 - col, 0 + row)); i++) {
+            if (this.gameMatrix[row - i][col + i] == this.currentPlayer.getId()) {
+                counter += 1;
+            } else {
+                counter = 1;
+            }
+            if (counter > discsInARow) {
+                discsInARow = counter;
+            }
+        }
+
+        // Wenn gegen Rechts Oben keine Steinreihe gefunden wurde
+        if (counter < 1) {
+            counter = 1;
+        }
+
+        // Nach unten links suchen
+        for (int i = 1; i <= Math.min(0 + col, 5 - row); i++) {
+            if (this.gameMatrix[row + i][col - i] == this.currentPlayer.getId()) {
+                counter += 1;
+            } else {
+                counter = 1;
+            }
+            if (counter > discsInARow) {
+                discsInARow = counter;
+            }
+        }
+
+        if (discsInARow >= 4) {
+            return true;
+        }
+        return false;
+    }
 
 }
-

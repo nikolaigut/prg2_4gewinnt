@@ -1,5 +1,7 @@
 package gameView;
 import gameControl.GameControl;
+import java.util.Observable;
+import java.util.Observer;
 
 
 /**
@@ -8,7 +10,7 @@ import gameControl.GameControl;
  * @generated
  */
 
-public class ConnectFourGui
+public class ConnectFourGui implements Observer
 {
 	/**
 	 * <!-- begin-user-doc -->
@@ -31,6 +33,11 @@ public class ConnectFourGui
 		super();
 		// TODO construct me
 	}
+
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
 

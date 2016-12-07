@@ -88,7 +88,7 @@ public class GameControl implements Runnable {
         try {
             fos = new FileOutputStream(path);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(this.gameModel);
+            oos.writeObject(this.getGameModel());
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -156,8 +156,8 @@ public class GameControl implements Runnable {
         LocalPlayer playerOne = (LocalPlayer)gameModel.getPlayerOne();
         Opponent playerTwo = gameModel.getPlayerTwo();
         
-        this.gameModel.init(playerTwo, playerTwo, gameModel.getGameMatrix(), gameModel.getCurrentPlayer());
-        this.gameModel.addObserver(gameUi);
+        this.getGameModel().init(playerTwo, playerTwo, gameModel.getGameMatrix(), gameModel.getCurrentPlayer());
+        this.getGameModel().addObserver(getGameUi());
         
         if(playerTwo instanceof KIPlayer){
             KIPlayer kiPlayer = (KIPlayer)playerTwo;
@@ -167,7 +167,7 @@ public class GameControl implements Runnable {
         }
         
         this.game = new Thread(this, "Run loaded game");
-        this.game.start();
+        this.getGame().start();
     }
 
     /**
@@ -175,7 +175,12 @@ public class GameControl implements Runnable {
      * <!--  end-user-doc  --> @generated @ordered
      */
     public void createLocalGame() {
+        LocalPlayer playerOne = new LocalPlayer();
+        LocalPlayer playerTwo = new LocalPlayer();
         
+        this.getGameModel().init(playerOne, playerTwo);
+        this.game = new Thread(this, "Run local game");
+        this.getGame().start();
     }
 
     /**
@@ -183,7 +188,12 @@ public class GameControl implements Runnable {
      * <!--  end-user-doc  --> @generated @ordered
      */
     public void createLocalComputerGame() {
-        // TODO implement me
+        LocalPlayer playerOne = new LocalPlayer();
+        KIPlayer playerTwo = new KIPlayer();
+        
+        this.getGameModel().init(playerOne, playerTwo);
+        this.game = new Thread(this, "Run local game");
+        this.getGame().start();
     }
 
     /**
@@ -207,16 +217,52 @@ public class GameControl implements Runnable {
      * <!--  end-user-doc  --> @generated @ordered
      */
     public void run() {
-        // TODO implement me
+        int columnNr;
+        while(!Thread.interrupted()){
+            columnNr = this.gameModel.getCurrentPlayer().getNextMove();
+            this.gameModel.insertDisc(columnNr);
+            if(this.gameModel.isDraw()){
+                this.gameModel.getPlayerOne().draw();
+                this.gameModel.getPlayerTwo().draw();
+            }else if(this.gameModel.isWon()){
+                this.gameModel.getCurrentPlayer().win();
+            }else if(this.gameModel.isLose()){
+                this.gameModel.getCurrentPlayer().lose();
+            }else{
+                this.gameModel.changePlayer();
+            }
+            this.gameModel.notifyObservers();
+        }
     }
     
     private void interruptGameCycle() {
         // Game-Thread unterbrechen
-        if (this.game != null) {
-            while (this.game.isAlive()) {
-                this.game.interrupt();
+        if (this.getGame() != null) {
+            while (this.getGame().isAlive()) {
+                this.getGame().interrupt();
             }
         }
+    }
+
+    /**
+     * @return the game
+     */
+    public Thread getGame() {
+        return game;
+    }
+
+    /**
+     * @return the gameUi
+     */
+    public ConnectFourGui getGameUi() {
+        return gameUi;
+    }
+
+    /**
+     * @return the gameModel
+     */
+    public GameModel getGameModel() {
+        return gameModel;
     }
 
 }

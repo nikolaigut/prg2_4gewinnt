@@ -1,5 +1,7 @@
 package connectFour;
 
+import gameControl.GameControl;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -15,7 +17,6 @@ public class ConnectFour
 	 * @generated
 	 */
 	public ConnectFour(){
-		super();
 	}
 
 	/**
@@ -26,7 +27,7 @@ public class ConnectFour
 	 */
 	
 	public void main(String[] args) {
-		// TODO implement me
+		new GameControl();
 	}
 
 }
