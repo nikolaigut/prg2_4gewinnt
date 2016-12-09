@@ -1,42 +1,74 @@
 package opponent;
 
+import gameModel.GameModel;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
+ * ConnectFour KIPlayer representing a player controlled by the Computer.
+ *
+ * Repräsentiert einen Computerspieler (Intelligent)
+ *
+ * @author A. Morard
  */
+public class KIPlayer extends Opponent implements Observer {
 
-public class KIPlayer extends Opponent
-{
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!--  end-user-doc  -->
-	 * @generated
-	 */
-	public KIPlayer(){
-		super();
-	}
+    //FIELDS--------------------------------------------------------------------
+    private int[][] matrix;
+    private GameTree gametree;
 
+    //CONSTRUCTORS--------------------------------------------------------------
+    /**
+     * Erstellt einen neuen KI-Spieler
+     *
+     * @param id Spieler 1 oder 2
+     */
+    public KIPlayer(int id) {
+        super(id);
+    }
+
+    //PUBLIC METHODS------------------------------------------------------------
+    /**
+     * Berechnet den nächsten Spielzug der KI
+     *
+     * @return nächster Spielzug
+     */
     @Override
     public int getNextMove() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        gametree = new GameTree(matrix, getId(), 5);
+        return gametree.getNextmove();
+    }
+
+    /**
+     * Zeichnet das Spielfeld anhand des aktuellen Models neu
+     *
+     * @param o Observer vom Typ GameModel
+     * @param arg
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        GameModel model = (GameModel) o;
+        this.matrix = model.getGameMatrix();
     }
 
     @Override
-    public void win() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void invalidMove() {
+
     }
 
     @Override
-    public void lose() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void youWin() {
+
+    }
+
+    @Override
+    public void youLose() {
+
     }
 
     @Override
     public void draw() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
 }
-

@@ -1,43 +1,44 @@
 package opponent;
 
+import java.io.Serializable;
+
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  --> @generated
+ * ConnectFour Opponent representing a player.
+ *
+ * Repräsentiert einen Spieler.
+ *
+ * @author A. Morard
+ *
  */
-public abstract class Opponent {
+public abstract class Opponent implements Serializable {
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    //FIELDS--------------------------------------------------------------------
+    private final int id;
+    private String name;
 
-    private int id;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
-    public String name;
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated
-     */
-    public Opponent() {
-        super();
+    //CONSTRUCTORS--------------------------------------------------------------
+    public Opponent(int id) {
+        this.id = id;
     }
 
-    public int getId() {
-        return id;
-    }
-    
     //ABSTRACT METHODS----------------------------------------------------------
     public abstract int getNextMove();
-    
-    public abstract void win();
 
-    public abstract void lose();
+    public abstract void invalidMove();
+
+    public abstract void youWin();
+
+    public abstract void youLose();
 
     public abstract void draw();
 
+    //PUBLIC METHODS------------------------------------------------------------
+    public int getNextMove(int[][] currentMatrix) {
+        return 0;
+    }
+
+    //GETTER and SETTER---------------------------------------------------------
+    public int getId() {
+        return id;
+    }
 }
