@@ -175,8 +175,8 @@ public class GameControl implements Runnable {
      * <!--  end-user-doc  --> @generated @ordered
      */
     public void createLocalGame() {
-        LocalPlayer playerOne = new LocalPlayer();
-        LocalPlayer playerTwo = new LocalPlayer();
+        LocalPlayer playerOne = new LocalPlayer(1, gameUi);
+        LocalPlayer playerTwo = new LocalPlayer(2, gameUi);
         
         this.getGameModel().init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
@@ -188,8 +188,8 @@ public class GameControl implements Runnable {
      * <!--  end-user-doc  --> @generated @ordered
      */
     public void createLocalComputerGame() {
-        LocalPlayer playerOne = new LocalPlayer();
-        KIPlayer playerTwo = new KIPlayer();
+        LocalPlayer playerOne = new LocalPlayer(1, gameUi);
+        KIPlayer playerTwo = new KIPlayer(2);
         
         this.getGameModel().init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
