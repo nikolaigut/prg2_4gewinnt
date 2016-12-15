@@ -12,61 +12,52 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * ConnectFour ClientPlayer representing a client player in a network game.
- *
- * Represäntiert einen Spieler(CLIENT) welcher über Netzwerk Spielt
+ * Repräsentiert einen Client welcher über Netzwerk Spielt.
  *
  * @author A. Morard
- *
  */
 public class ClientPlayer implements ActionListener, Runnable {
-
-    //FIELDS--------------------------------------------------------------------
     private final Socket socket;
     private PrintWriter out;
     private ObjectInputStream in;
     private final ConnectFourGui clientGui;
 
-    //CONSTRUCTORS--------------------------------------------------------------
     /**
-     * Erstellt einen neuen ClientSpieler
+     * Erstellt einen neuen ClientSpieler.
      *
      * @param serverSocket Socket des Hosts
-     * @param gamegui
+     * @param gamegui die Instanz des Spiels
      */
-    public ClientPlayer(Socket serverSocket, ConnectFourGui gamegui) {
+    public ClientPlayer(final Socket serverSocket, final ConnectFourGui gamegui) {
         this.socket = serverSocket;
         this.clientGui = gamegui;
-
         try {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
             this.in = new ObjectInputStream(this.socket.getInputStream());
         } catch (IOException ex) {
             Logger.getLogger(ClientPlayer.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         new Thread(this, "clientThread").start();
     }
 
-    //PUBLIC METHODS------------------------------------------------------------
     /**
-     * Übermittlet den Spielzug des Clients an den Host
+     * Übermittlet den Spielzug des Clients an den Host.
      *
-     * @param e
+     * @param e das Event das übermittelt werden soll
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public final void actionPerformed(final ActionEvent e) {
         String col = e.getActionCommand();
         out.println(col);
         out.flush();
     }
 
     /**
-     * Beinhaltet den Ablauf eines ClientPlayers
+     * Beinhaltet den Ablauf des Clients.
+     *
      */
     @Override
-    public void run() {
-        //Während dem das Spiel läuft
+    public final void run() {
         while (!Thread.interrupted()) {
             try {
                 GameModel tempModel = (GameModel) in.readObject();
@@ -100,7 +91,6 @@ public class ClientPlayer implements ActionListener, Runnable {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(ClientPlayer.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
         try {
             this.socket.close();

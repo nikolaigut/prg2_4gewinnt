@@ -3,33 +3,26 @@ package opponent;
 import java.io.Serializable;
 
 /**
- * ConnectFour GameTree
- *
- * Erstellt einen Spielbaum anhand dessen der KI-Spieler seinen Spielzug
+ * Erstellt einen Spielbaum anhand dessen der Computergegener seinen Spielzug
  * berechnet.
  *
  * @author A. Morard
- *
- * @version 1.0
  */
 public class GameTree implements Serializable {
-
-    //FIELDS--------------------------------------------------------------------
     private int owner;
     private int baumhoehe;
     private int nextmove = 3;
     private int[][] currentmatrix;
-    GameTreeNode root;
+    private GameTreeNode root;
 
-    //CONSTRUCTORS--------------------------------------------------------------
     /**
-     * Erstellt einen Spielbaum mit angegebenr tiefe
+     * Erstellt einen Spielbaum mit angegebener Tiefe.
      *
-     * @param currentmatrix matrix von welcher der Baum berechnet werden soll
-     * @param owner besitzer des Baums
-     * @param tiefe Ebene bis zu welcher der Baum berechnet werden soll
+     * @param currentmatrix die Matrix des zu berechnenden Baumes
+     * @param owner der Besitzer des Baumes
+     * @param tiefe Edie bene bis zu welcher der Baum berechnet werden soll
      */
-    public GameTree(int[][] currentmatrix, int owner, int tiefe) {
+    public GameTree(final int[][] currentmatrix, final int owner, final int tiefe) {
         this.currentmatrix = currentmatrix;
         this.owner = owner;
         this.baumhoehe = tiefe;
@@ -37,22 +30,21 @@ public class GameTree implements Serializable {
     }
 
     /**
-     * Erstellt einen Spielbaum mit Standardtiefe 5
+     * Erstellt einen Spielbaum mit Standardtiefe 5.
      *
-     * @param currentmatrix matrix von welcher der Baum berechnet werden soll
-     * @param owner besitzer des Baums
+     * @param currentmatrix die Matrix des zu berechnenden Baumes
+     * @param owner der Besitzer des Baumes
      */
-    public GameTree(int[][] currentmatrix, int owner) {
+    public GameTree(final int[][] currentmatrix, final int owner) {
         this(currentmatrix, owner, 5);
     }
 
-    //PUBLIC METHODS------------------------------------------------------------
     /**
-     * Berechnet den bestmöglichen Zug für den aktuellen Baum
+     * Berechnet den bestmöglichen Zug für den aktuellen Baum.
      *
-     * @return Spalte für den besten Zug
+     * @return die Spalte für den besten Zug
      */
-    public int getNextmove() {
+    public final int getNextmove() {
         nextmove = root.getBestMove();
         return nextmove;
     }

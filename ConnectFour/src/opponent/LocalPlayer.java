@@ -5,39 +5,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * ConnectFour LocalPlayer
- *
- * Represäntiert einen Lokalen Spieler
+ * Represäntiert einen Lokalen Spieler.
  *
  * @author A. Morard
- *
  */
 public class LocalPlayer extends Opponent implements ActionListener {
-
-    //FIELDS--------------------------------------------------------------------
     private int col;
     private transient ConnectFourGui gameui;
 
-    //CONSTRUCTORS--------------------------------------------------------------
     /**
-     * Erstellt einen neuen Lokalen Spieler
+     * Konstruktor für einen neuen Lokalen Spieler.
      *
-     * @param id
-     * @param gameui
+     * @param id Die ID des Spielers
+     * @param gameui Die Instanz des Spiels für den Spieler
      */
-    public LocalPlayer(int id, ConnectFourGui gameui) {
+    public LocalPlayer(final int id, final ConnectFourGui gameui) {
         super(id);
         this.gameui = gameui;
     }
 
-    //PUBLIC METHODS------------------------------------------------------------
     /**
-     * Wartet bis der Lokale Spieler einen Zug gemacht hat
+     * Wartet bis der Lokale Spieler einen Zug gemacht hat.
      *
      * @return Gibt den Spielzug zurück welcher der Spieler gemacht hat
      */
     @Override
-    public int getNextMove() {
+    public final int getNextMove() {
         synchronized (this) {
             try {
                 wait();
@@ -49,13 +42,12 @@ public class LocalPlayer extends Opponent implements ActionListener {
     }
 
     /**
-     * Listener für die Spalten Buttons des GUI's
+     * Listener für die Spalten Buttons des GUI's.
      *
-     * @param e
+     * @param e das Event des GUI's
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // ActionCommand ist Spaltennummer
+    public final void actionPerformed(final ActionEvent e) {
         this.col = Integer.valueOf(e.getActionCommand());
 
         synchronized (this) {
@@ -64,7 +56,8 @@ public class LocalPlayer extends Opponent implements ActionListener {
     }
 
     /**
-     * Meldet dass der Spielzug ungültig ist
+     * Kontrolliert ob ein Zug gültig ist oder nicht.
+     *
      */
     @Override
     public void invalidMove() {
@@ -72,7 +65,8 @@ public class LocalPlayer extends Opponent implements ActionListener {
     }
 
     /**
-     * Meldet dass das Spiel gewonnen ist
+     * Kontroliert ob das Spiel gewonnen wurde.
+     *
      */
     @Override
     public void youWin() {
@@ -82,7 +76,8 @@ public class LocalPlayer extends Opponent implements ActionListener {
     }
 
     /**
-     * Meldet dass das Spiel verloren ist
+     * Kontrolliert ob das Spiel verloren wurde.
+     *
      */
     @Override
     public void youLose() {
@@ -92,7 +87,8 @@ public class LocalPlayer extends Opponent implements ActionListener {
     }
 
     /**
-     * Meldet dass das Spiel unentschieden ist
+     * Kontrolliert ob ein Unentschieden erreicht wurde.
+     *
      */
     @Override
     public void draw() {
@@ -101,8 +97,12 @@ public class LocalPlayer extends Opponent implements ActionListener {
         //this.gameui.draw();
     }
 
-    //GETTER and SETTER---------------------------------------------------------
-    public void setGameui(ConnectFourGui gameui) {
+    /**
+     * Kontrolliert ob ein Unentschieden erreicht wurde.
+     *
+     * @param gameui die Instanz des Spiels
+     */
+    public final void setGameui(final ConnectFourGui gameui) {
         this.gameui = gameui;
     }
 }

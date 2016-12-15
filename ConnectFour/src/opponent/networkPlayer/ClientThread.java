@@ -7,17 +7,11 @@ import java.net.UnknownHostException;
 import javax.swing.JDialog;
 
 /**
- * ConnectFour ClientThread
- *
- * Thread zum Verbindungsaufbau mit einem Server
+ * Thread zum Verbindungsaufbau mit einem Server aus Clientsicht.
  *
  * @author A. Morard
- *
- * @version 1.0
  */
 public class ClientThread extends Thread {
-
-    //FIELDS--------------------------------------------------------------------
     private final GameControl control;
     private final JDialog dialog;
     private Socket socket;
@@ -26,15 +20,14 @@ public class ClientThread extends Thread {
     private boolean isConnected;
     private int port;
 
-    //CONSTRUCTORS--------------------------------------------------------------
     /**
-     * Erstellt einen neuen Thread zum Verbindungsaufbau
+     * Erstellt einen neuen Thread für den Verbindungsaufbau.
      *
-     * @param control
-     * @param panel
-     * @param hostname
+     * @param control die Instanz des GameControllers
+     * @param panel das Panel für die Eingabe
+     * @param hostname der Hostname
      */
-    public ClientThread(GameControl control, JDialog panel, String hostname) {
+    public ClientThread(final GameControl control, final JDialog panel, final String hostname) {
         super("Client Thread");
 
         this.control = control;
@@ -42,29 +35,27 @@ public class ClientThread extends Thread {
         this.hostname = hostname;
     }
 
-    //PUBLIC METHODS------------------------------------------------------------
     /**
-     * Bricht den Verbindunsaufbau ab
+     * Bricht den Verbindunsaufbau ab.
      */
-    public void exit() {
+    public final void exit() {
         this.exit = true;
         this.dialog.setVisible(false);
     }
 
     /**
-     * Ablauf des Verbindungsaufbaus zum Server
+     * Ablauf des Verbindungsaufbaus zum Server.
      */
     @Override
-    public void run() {
-        try{
+    public final void run() {
+        try {
             do {
                 this.socket = new Socket(hostname, port);
                 this.isConnected = true;
             } while (!this.isConnected && !this.exit);
         } catch (UnknownHostException uhe) {
             System.out.println(uhe + " Host not found");
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             System.out.println(ioe);
         }
         if (this.isConnected) {
