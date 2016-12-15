@@ -2,6 +2,7 @@ package gameControl;
 
 import gameView.ConnectFourGui;
 import gameModel.GameModel;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -178,7 +179,12 @@ public class GameControl implements Runnable {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
         LocalPlayer playerTwo = new LocalPlayer(2, gameUi);
         
-        this.getGameModel().init(playerOne, playerTwo);
+        this.gameModel.addObserver(gameUi);
+        ActionListener[] actionListeners = {playerOne, playerTwo};
+        
+        this.gameUi.addColumnButtonListener(actionListeners);
+        
+        this.gameModel.init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
         this.getGame().start();
     }
@@ -191,7 +197,11 @@ public class GameControl implements Runnable {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
         KIPlayer playerTwo = new KIPlayer(2);
         
-        this.getGameModel().init(playerOne, playerTwo);
+        this.gameModel.addObserver(gameUi);
+        
+        
+        
+        this.gameModel.init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
         this.getGame().start();
     }
