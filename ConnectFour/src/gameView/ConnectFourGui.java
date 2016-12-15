@@ -3,12 +3,12 @@ import gameControl.GameControl;
 import gameModel.GameModel;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
-//import java.awt.event.*;
 
-public class ConnectFourGui implements Observer { // implements ActionListener {
+public class ConnectFourGui implements Observer {
     
     // Attribute
     
@@ -116,6 +116,7 @@ public class ConnectFourGui implements Observer { // implements ActionListener {
         playButton.add(this.column5);
         playButton.add(this.column6);
         playButton.add(this.column7);
+        
         playButton.setVisible(true);
         
         return playButton;
@@ -200,12 +201,51 @@ public class ConnectFourGui implements Observer { // implements ActionListener {
         return playerStatus;
     }
     
-    //@Override
-    //public void actionPerformed(ActionEvent e) {
-    //    if(e.getSource() == this.column1) {
-    //        colorBoard[2][2] = 1;
-    //    }
-    //}
+    public void addColumnButtonListener(ActionListener listener) {
+        removeColumnButtonListener();
+        // Liest alle Spalten Buttons aus
+        Component[] allButtons = playButton.getComponents();
+
+        // Fügt allen Spalten Buttons einen ActionListener hinzu
+        for (Component component : allButtons) {
+            JButton button = (JButton) component;
+            button.addActionListener(listener);
+        }
+    }
+
+    /**
+     * Fügt eine Liste von ActionListener zu jedem Spaltenbutton hinzu
+     *
+     * @param allListener Liste mit ActionListener
+     */
+    public void addColumnButtonListener(ActionListener[] allListener) {
+        removeColumnButtonListener();
+        // Liest alle Spalten Buttons aus
+        Component[] allButtons = playButton.getComponents();
+
+        // Fügt allen Spalten Buttons eine Liste von ActionListener hinzu
+        for (Component component : allButtons) {
+            JButton button = (JButton) component;
+            for (ActionListener listener : allListener) {
+                button.addActionListener(listener);
+            }
+        }
+    }
+    
+    private void removeColumnButtonListener() {
+        // Liest alle Spalten Buttons aus
+        Component[] allButtons = playButton.getComponents();
+
+        // Fügt allen Spalten Buttons einen ActionListener hinzu
+        for (Component component : allButtons) {
+            JButton button = (JButton) component;
+            for (ActionListener actionListener : button.getActionListeners()) {
+                if (actionListener != null) {
+                    button.removeActionListener(actionListener);
+                }
+            }
+        }
+    }
 
     @Override
     public void update(Observable o, Object arg) {
