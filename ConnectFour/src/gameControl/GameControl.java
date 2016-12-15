@@ -225,9 +225,9 @@ public class GameControl implements Runnable {
                 this.gameModel.getPlayerOne().draw();
                 this.gameModel.getPlayerTwo().draw();
             }else if(this.gameModel.isWon()){
-                this.gameModel.getCurrentPlayer().win();
+                this.gameModel.getCurrentPlayer().youWin();
             }else if(this.gameModel.isLose()){
-                this.gameModel.getCurrentPlayer().lose();
+                this.gameModel.getCurrentPlayer().youLose();
             }else{
                 this.gameModel.changePlayer();
             }
