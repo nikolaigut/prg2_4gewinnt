@@ -3,6 +3,7 @@ import gameControl.GameControl;
 import gameModel.GameModel;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,6 +19,15 @@ public class ConnectFourGui implements Observer {
     private JPanel playBoard;
     private JPanel textBoard;
     private JPanel playerStatus;
+    
+    private JMenu menu;
+    private JMenuBar menuBar;
+    private JMenuItem local;
+    private JMenuItem computer;
+    private JMenuItem client;
+    private JMenuItem server;
+    private JMenuItem save;
+    private JMenuItem load;
        
     private JButton column1 = new JButton("col 1");
     private JButton column2 = new JButton("col 2");
@@ -51,14 +61,6 @@ public class ConnectFourGui implements Observer {
         
         this.gameControl = gameControl;
         createFrame();
-        
-        //column1.addActionListener(this);
-        //column2.addActionListener(this);
-        //column3.addActionListener(this);
-        //column4.addActionListener(this);
-        //column5.addActionListener(this);
-        //column6.addActionListener(this);
-        //column7.addActionListener(this);
     }
         
     // Frame erzeugen
@@ -77,6 +79,8 @@ public class ConnectFourGui implements Observer {
         frame.add(new JLabel("    "), BorderLayout.NORTH);
         frame.add(new JLabel("    "), BorderLayout.SOUTH);
         frame.add(new JLabel("    "), BorderLayout.WEST);
+        createMenu();
+        frame.setJMenuBar(menuBar);
         
         frame.setVisible(true);
     }
@@ -84,10 +88,98 @@ public class ConnectFourGui implements Observer {
     // Getter Methode Frame
     
     private JFrame getFrame() {
+        
         return frame;
     }
     
     // Menu erzeugen 
+    
+    private void createMenu() {
+        
+        menu = new JMenu("Menu");
+        menuBar = new JMenuBar();
+        local = new JMenuItem("local");
+        computer = new JMenuItem("computer");
+        client = new JMenuItem("client");
+        server = new JMenuItem("server");
+        save = new JMenuItem("save");
+        load = new JMenuItem("load");
+        menu.add(local);
+        menu.add(computer);
+        menu.add(client);
+        menu.add(server);
+        menu.add(save);
+        menu.add(load);
+        menuBar.add(menu);
+        
+        local.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuLocalStart(e);
+            }
+        });
+        
+        computer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuComputerStart(e);
+            }
+        });
+        
+        client.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuClientStart(e);
+            }
+        });
+        
+        server.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuServerStart(e);
+            }
+        });
+        
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuSave(e);
+            }
+        });
+        
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuLoad(e);
+            }
+        });
+    }
+    
+    private void menuLocalStart(ActionEvent e){
+        this.gameControl.createLocalGame();
+    }
+    
+    private void menuComputerStart(ActionEvent e) {
+        this.gameControl.createLocalComputerGame();
+    }
+    
+    private void menuClientStart(ActionEvent e) {
+        this.gameControl.createClientGame();
+    }
+    
+    private void menuServerStart(ActionEvent e) {
+        this.gameControl.createServerGame();
+    }
+    
+    private void menuSave(ActionEvent e) {
+        this.gameControl.saveGame("c:\\connect4save.save");
+    }
+    
+    private void menuLoad(ActionEvent e) {
+        this.gameControl.loadGame("c:\\connect4save.save");
+    }
+    
+    
     
     // Hauptfeld erzeugen
     
