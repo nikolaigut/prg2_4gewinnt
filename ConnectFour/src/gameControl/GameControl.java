@@ -161,7 +161,7 @@ public class GameControl implements Runnable {
     
     public void createLocalComputerGame() {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
-        KIPlayer playerTwo = new KIPlayer(2);
+        KIPlayer playerTwo = new KIPlayer(2, gameUi);
         
         this.gameModel.addObserver(gameUi);
         

@@ -49,7 +49,6 @@ public class LocalPlayer extends Opponent implements ActionListener {
     @Override
     public final void actionPerformed(final ActionEvent e) {
         this.col = Integer.valueOf(e.getActionCommand());
-
         synchronized (this) {
             notifyAll();
         }
@@ -61,7 +60,7 @@ public class LocalPlayer extends Opponent implements ActionListener {
      */
     @Override
     public void invalidMove() {
-        //this.gameui.invalidMove();
+        this.gameui.invalidMove();
     }
 
     /**
@@ -70,9 +69,9 @@ public class LocalPlayer extends Opponent implements ActionListener {
      */
     @Override
     public void youWin() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.youWin();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.youWin();
     }
 
     /**
@@ -81,9 +80,9 @@ public class LocalPlayer extends Opponent implements ActionListener {
      */
     @Override
     public void youLose() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.youLose();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.youLose();
     }
 
     /**
@@ -92,9 +91,9 @@ public class LocalPlayer extends Opponent implements ActionListener {
      */
     @Override
     public void draw() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.draw();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.draw();
     }
 
     /**

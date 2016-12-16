@@ -1,5 +1,6 @@
 package opponent;
 
+import gameView.ConnectFourGui;
 import gameModel.GameModel;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,14 +13,16 @@ import java.util.Observer;
 public class KIPlayer extends Opponent implements Observer {
     private int[][] matrix;
     private GameTree gametree;
+    private transient ConnectFourGui gameui;
 
     /**
      * Erstellt einen neuen Computergegner.
      *
      * @param id die ID des Computergegners
      */
-    public KIPlayer(final int id) {
+    public KIPlayer(final int id, final ConnectFourGui gameui) {
         super(id);
+        this.gameui = gameui;
     }
 
     /**
@@ -46,45 +49,45 @@ public class KIPlayer extends Opponent implements Observer {
     }
 
     /**
-     * Kontrolliert ob ein Zug gültig ist oder nicht.
+     * Wird ausgeführt wenn ein unglütiger Zug gemacht wurde.
      *
      */
     @Override
     public void invalidMove() {
-        //this.gameui.invalidMove();
+        this.gameui.invalidMove();
     }
 
     /**
-     * Kontroliert ob das Spiel gewonnen wurde.
+     * Wird ausgeführt wenn der Computerspieler gewonnen hat.
      *
      */
     @Override
     public void youWin() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.youWin();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.youWin();
     }
 
     /**
-     * Kontrolliert ob das Spiel verloren wurde.
+     * Wird ausgeführt wenn der Computerspieler verloren hat.
      *
      */
     @Override
     public void youLose() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.youLose();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.youLose();
     }
 
     /**
-     * Kontrolliert ob ein Unentschieden erreicht wurde.
+     * Wird ausgeführt wenn ein Unentschieden erreicht wurde.
      *
      */
     @Override
     public void draw() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.draw();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.draw();
     }
 
 }
