@@ -103,11 +103,11 @@ public class GameModel extends Observable implements Serializable {
     public int getRowToInsert(int columnNr) throws Exception {
         int rowToInsert = -1;
 
-        for (int i = 0; i > this.rowLenght; i++) {
+        for (int i = 0; i < this.rowLenght; i++) {
             if (this.gameMatrix[i][columnNr] != 0) {
                 rowToInsert++;
             } else {
-                return rowToInsert;
+                return i;
             }
         }
         if (rowToInsert >= this.rowLenght || rowToInsert < 0) {

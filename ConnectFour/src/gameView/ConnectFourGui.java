@@ -37,13 +37,13 @@ public class ConnectFourGui implements Observer {
     private JMenuItem save;
     private JMenuItem load;
        
-    private JButton column1 = new JButton("col 1");
-    private JButton column2 = new JButton("col 2");
-    private JButton column3 = new JButton("col 3");
-    private JButton column4 = new JButton("col 4");
-    private JButton column5 = new JButton("col 5");
-    private JButton column6 = new JButton("col 6");
-    private JButton column7 = new JButton("col 7");
+    private JButton column1 = new JButton("1");
+    private JButton column2 = new JButton("2");
+    private JButton column3 = new JButton("3");
+    private JButton column4 = new JButton("4");
+    private JButton column5 = new JButton("5");
+    private JButton column6 = new JButton("6");
+    private JButton column7 = new JButton("7");
     
     private JTextArea player1 = new JTextArea("Player 1");
     private JTextArea player2 = new JTextArea("Player 2");
@@ -405,10 +405,28 @@ public class ConnectFourGui implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         GameModel model = (GameModel) o;
-        
+        int[][] gameMatrix = model.getGameMatrix();
         Opponent playerOne = model.getPlayerOne();
         Opponent playerTwo = model.getPlayerTwo();
         Opponent currentPlayer = model.getCurrentPlayer();
+        
+        playBoard.removeAll();
+        for(int row = 0; row < 6; row++){
+            for(int col = 0; col < 7; col++){
+                if(gameMatrix[row][col] != 0){
+                    if(gameMatrix[row][col] == playerOne.getId()){
+                        circleBoard[row][col] = new Circle(255);
+                    }else{
+                        circleBoard[row][col] = new Circle(55);
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < circleBoardRow; i++) {
+            for(int j = 0; j < circleBoardColumn; j++) {
+                playBoard.add(circleBoard[i][j]);
+            }
+        }
         
         if(currentPlayer.getId() != playerOne.getId()){
             if(!(playerTwo instanceof LocalPlayer)){

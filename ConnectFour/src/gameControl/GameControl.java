@@ -207,6 +207,7 @@ public class GameControl implements Runnable {
         int columnNr;
         while(!Thread.interrupted()){
             columnNr = this.gameModel.getCurrentPlayer().getNextMove();
+            columnNr--;
             this.gameModel.insertDisc(columnNr);
             if(this.gameModel.isDraw()){
                 this.gameModel.getPlayerOne().draw();
