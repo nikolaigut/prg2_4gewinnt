@@ -53,7 +53,7 @@ public class ServerThread extends Thread {
             this.serverSocket = new ServerSocket(port);
             Socket clientSocket = serverSocket.accept();
             this.panel.setVisible(false);
-            this.control.createServerGame();
+            this.control.createServerGame(clientSocket);
         } catch (IOException ex) {
             Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, null, ex);
         }

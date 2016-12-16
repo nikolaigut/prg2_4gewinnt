@@ -9,57 +9,43 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import opponent.KIPlayer;
 import opponent.LocalPlayer;
 import opponent.Opponent;
+import opponent.networkPlayer.ClientPlayer;
+import opponent.networkPlayer.ServerPlayer;
 import util.GameMode;
 
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  --> @generated
+ * This class is the control of the connect4 game
+ * @author Nikolai Strässle <nikolai.straessle@stud.hslu.ch>
  */
+
 public class GameControl implements Runnable {
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
 
     private Thread game;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private ConnectFourGui gameUi;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private GameModel gameModel;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private static int networkPort;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public GameControl() {
         this.gameModel = new GameModel();
         this.gameUi = new ConnectFourGui(this);
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void newGame(GameMode gameType) {
         interruptGameCycle();
         switch (gameType) {
@@ -69,20 +55,12 @@ public class GameControl implements Runnable {
             case LOCAL_COMPUTER:
                 createLocalComputerGame();
                 break;
-            case NETWORK_SERVER:
-                createServerGame();
-                break;
-            case NETWORK_CLIENT:
-                createClientGame();
-                break;
             default:
+                createLocalComputerGame();
         }
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void saveGame(String path) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
@@ -112,10 +90,7 @@ public class GameControl implements Runnable {
         }
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void loadGame(String path) {
         interruptGameCycle();
         FileInputStream fis = null;
@@ -149,10 +124,7 @@ public class GameControl implements Runnable {
         }
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void createLoadGame(GameModel gameModel) {
         LocalPlayer playerOne = (LocalPlayer)gameModel.getPlayerOne();
         Opponent playerTwo = gameModel.getPlayerTwo();
@@ -171,10 +143,7 @@ public class GameControl implements Runnable {
         this.getGame().start();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void createLocalGame() {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
         LocalPlayer playerTwo = new LocalPlayer(2, gameUi);
@@ -189,10 +158,7 @@ public class GameControl implements Runnable {
         this.getGame().start();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void createLocalComputerGame() {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
         KIPlayer playerTwo = new KIPlayer(2);
@@ -206,26 +172,37 @@ public class GameControl implements Runnable {
         this.getGame().start();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
-    public void createServerGame() {
-        // TODO implement me
+    
+    public void createServerGame(Socket clientSocket) {
+        LocalPlayer playerOne = new LocalPlayer(1, this.gameUi);
+        ServerPlayer playerTwo = new ServerPlayer(2, clientSocket);
+        
+        this.gameModel.addObserver(gameUi);
+        this.gameModel.addObserver(playerTwo);
+        
+        this.gameUi.addColumnButtonListener(playerOne);
+        
+        this.gameModel.init(playerOne, playerTwo);
+        
+        this.gameUi.enableColumnButtons();
+        this.gameUi.disableSaveButton();
+        
+        this.game = new Thread(this, "Server game");
+        this.game.start();
+        
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
-    public void createClientGame() {
-        // TODO implement me
+    
+    public void createClientGame(Socket serverSocket) {
+        ClientPlayer clientPlayer = new ClientPlayer(serverSocket, this.gameUi);
+        this.gameUi.addColumnButtonListener(clientPlayer);
+        this.gameUi.enableColumnButtons();
+        this.gameUi.disableSaveButton();
+        
+        
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void run() {
         int columnNr;
         while(!Thread.interrupted()){

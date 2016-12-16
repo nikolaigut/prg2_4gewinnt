@@ -61,7 +61,7 @@ public class ClientThread extends Thread {
         if (this.isConnected) {
             this.dialog.setVisible(false);
             System.out.println(this.socket instanceof Socket);
-            this.control.createClientGame();
+            this.control.createClientGame(socket);
         }
     }
 }

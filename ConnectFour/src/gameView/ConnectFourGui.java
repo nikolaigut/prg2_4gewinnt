@@ -5,9 +5,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import opponent.networkPlayer.ClientThread;
+import opponent.networkPlayer.ServerThread;
 
 public class ConnectFourGui implements Observer {
     
@@ -164,11 +170,18 @@ public class ConnectFourGui implements Observer {
     }
     
     private void menuClientStart(ActionEvent e) {
-        this.gameControl.createClientGame();
+        ServerThread serverThread = new ServerThread(this.gameControl, null);
+        
+        serverThread.start();
     }
     
     private void menuServerStart(ActionEvent e) {
-        this.gameControl.createServerGame();
+        try {
+            ClientThread clientThread = new ClientThread(this.gameControl, null, InetAddress.getLocalHost().getHostName());
+            clientThread.start();
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(ConnectFourGui.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void menuSave(ActionEvent e) {

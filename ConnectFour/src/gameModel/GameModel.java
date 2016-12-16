@@ -7,84 +7,49 @@ import java.util.logging.Logger;
 import opponent.Opponent;
 
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  --> @generated
+ * This class will describe the game model
+ * @author Nikolai Strässle <nikolai.straessle@stud.hslu.ch>
  */
+
 public class GameModel extends Observable implements Serializable {
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private int[][] gameMatrix;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private Opponent playerOne;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private Opponent playerTwo;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private int rowLenght;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private int columnLenght;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private boolean draw;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private boolean invalid;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private boolean won;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private boolean lose;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     private Opponent currentPlayer;
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public GameModel() {
         this.columnLenght = 7;
         this.rowLenght = 6;
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void init(Opponent playerOne, Opponent playerTwo) {
         setChanged();
         this.gameMatrix = new int[this.rowLenght][this.columnLenght];
@@ -96,10 +61,7 @@ public class GameModel extends Observable implements Serializable {
         notifyObservers();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void init(Opponent playerOne, Opponent playerTwo, int[][] gameMatrix, Opponent currentPlayer) {
         setChanged();
         this.gameMatrix = gameMatrix;
@@ -110,10 +72,7 @@ public class GameModel extends Observable implements Serializable {
         notifyObservers();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void insertDisc(int columnNr) {
         try {
             int row = getRowToInsert(columnNr);
@@ -128,10 +87,7 @@ public class GameModel extends Observable implements Serializable {
         }
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void checkState(int row, int col) {
         if (checkDraw()) {
             this.draw = true;
@@ -143,10 +99,7 @@ public class GameModel extends Observable implements Serializable {
         }
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public int getRowToInsert(int columnNr) throws Exception {
         int rowToInsert = -1;
 
@@ -163,10 +116,7 @@ public class GameModel extends Observable implements Serializable {
         return rowToInsert;
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public void changePlayer() {
         setChanged();
         if (this.currentPlayer == this.playerOne) {
@@ -177,34 +127,22 @@ public class GameModel extends Observable implements Serializable {
         notifyObservers();
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public Opponent getPlayerOne() {
         return this.playerOne;
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public Opponent getPlayerTwo() {
         return this.playerTwo;
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public int[][] getGameMatrix() {
         return this.gameMatrix;
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  --> @generated @ordered
-     */
+    
     public Opponent getCurrentPlayer() {
         return this.currentPlayer;
     }

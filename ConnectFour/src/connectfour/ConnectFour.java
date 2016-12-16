@@ -2,29 +2,18 @@ package connectfour;
 
 import gameControl.GameControl;
 
-
 /**
- * <!-- begin-user-doc -->
- * <!--  end-user-doc  -->
- * @generated
+ * The main class of the application. This class is the once with a main method
+ * to start the connect4 game
+ * @author Nikolai Strässle <nikolai.straessle@stud.hslu.ch>
  */
 
 public class ConnectFour
 {
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  -->
-     * @generated
-     */
+    
     public ConnectFour(){
     }
 
-    /**
-     * <!-- begin-user-doc -->
-     * <!--  end-user-doc  -->
-     * @generated
-     * @ordered
-     */
 
     public static void main(String[] args) {
         GameControl g = new GameControl();
