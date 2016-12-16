@@ -13,12 +13,13 @@ import java.util.Observer;
 public class KIPlayer extends Opponent implements Observer {
     private int[][] matrix;
     private GameTree gametree;
-    private transient ConnectFourGui gameui;
+    private final transient ConnectFourGui gameui;
 
     /**
      * Erstellt einen neuen Computergegner.
      *
      * @param id die ID des Computergegners
+     * @param gameui Die Instanz des Spiels für den Spieler
      */
     public KIPlayer(final int id, final ConnectFourGui gameui) {
         super(id);
@@ -53,7 +54,7 @@ public class KIPlayer extends Opponent implements Observer {
      *
      */
     @Override
-    public void invalidMove() {
+    public final void invalidMove() {
         this.gameui.invalidMove();
     }
 
@@ -62,7 +63,7 @@ public class KIPlayer extends Opponent implements Observer {
      *
      */
     @Override
-    public void youWin() {
+    public final void youWin() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
         this.gameui.youWin();
@@ -73,7 +74,7 @@ public class KIPlayer extends Opponent implements Observer {
      *
      */
     @Override
-    public void youLose() {
+    public final void youLose() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
         this.gameui.youLose();
@@ -84,7 +85,7 @@ public class KIPlayer extends Opponent implements Observer {
      *
      */
     @Override
-    public void draw() {
+    public final void draw() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
         this.gameui.draw();

@@ -30,7 +30,8 @@ public class GameTreeNode implements Serializable {
      * @param movenr welcher Spielzug der Knoten repräsentiert (1-7)
      * @param owner wem der Knoten gehört
      */
-    public GameTreeNode(final GameTreeNode parent,
+    public GameTreeNode(
+            final GameTreeNode parent,
             final int[][] currentmodel,
             final int baumhoehe,
             final int movenr,
@@ -50,11 +51,9 @@ public class GameTreeNode implements Serializable {
             //Spieler kann gewinnen.
         } else {
             if (knotentiefe <= baumhoehe) {
-                //System.out.println("Erstelle neue Nodes für jeden gültigen Spielzug Ebene: "+knotentiefe );
                 childnodes = new ArrayList<>(7);
 
                 for (int i : validemoves) {
-                    //System.out.println("Node für Spalte: "+i);
                     int[][] newmodel = new int[6][7];
 
                     for (int row = 0; row < 6; row++) {
@@ -69,7 +68,6 @@ public class GameTreeNode implements Serializable {
                     } else {
                         childnodes.add(new GameTreeNode(this, newmodel, baumhoehe - 1, i, enemy));
                     }
-
                 }
             }
             this.value = calcValue(currentmodel, movenr, owner);
@@ -107,14 +105,14 @@ public class GameTreeNode implements Serializable {
      * Prüft ob der Besitzer des Knotens gewinnen kann.
      *
      * @param matrix Matrix des Knotens
-     * @param owner Besitzer des Knotens
+     * @param own Besitzer des Knotens
      * @return true=Besitzern kann mit diesem Spielzug gewinnen
      */
-    private boolean checkOwnWin(final int[][] matrix, final int owner) {
+    private boolean checkOwnWin(final int[][] matrix, final int own) {
 
         for (int i : validemoves) {
-            if (getScoreHorizontal(matrix, i, owner) >= 100000 || getScoreVertical(matrix, i, owner) >= 100000
-                    || getScoreDiag1(matrix, i, owner) >= 100000 || getScoreDiag2(matrix, i, owner) >= 100000) {
+            if (getScoreHorizontal(matrix, i, own) >= 100000 || getScoreVertical(matrix, i, own) >= 100000
+                    || getScoreDiag1(matrix, i, own) >= 100000 || getScoreDiag2(matrix, i, own) >= 100000) {
                 value = 1000000;
                 bestmove = i;
                 //System.out.println("Gewinnspalte KI: "+i);
@@ -128,13 +126,13 @@ public class GameTreeNode implements Serializable {
      * Prüft ob der Gegner des Knotens gewinnen kann.
      *
      * @param matrix Matrix des Knotens
-     * @param enemy Gegner des Knotens
-     * @return true=Gegner kann mit diesem Spielzug gewinnen
+     * @param opponent Gegner des Knotens
+     * @return Wenn true kann der Gegner kann mit diesem Spielzug gewinnen
      */
-    private boolean checkEnemyWin(final int[][] matrix, final int enemy) {
+    private boolean checkEnemyWin(final int[][] matrix, final int opponent) {
         for (int i : validemoves) {
-            if (getScoreHorizontal(matrix, i, enemy) >= 100000 || getScoreVertical(matrix, i, enemy) >= 100000
-                    || getScoreDiag1(matrix, i, enemy) >= 100000 || getScoreDiag2(matrix, i, enemy) >= 100000) {
+            if (getScoreHorizontal(matrix, i, opponent) >= 100000 || getScoreVertical(matrix, i, opponent) >= 100000
+                    || getScoreDiag1(matrix, i, opponent) >= 100000 || getScoreDiag2(matrix, i, opponent) >= 100000) {
                 value = 1000000;
                 bestmove = i;
                 //System.out.println("Gewinnspalte Spieler: "+i);
@@ -341,31 +339,31 @@ public class GameTreeNode implements Serializable {
      *
      * @param matrix die Matrix in der der Feldwert berechnet werden soll
      * @param column die Spalte in der der Feldwert berechnet werden soll
-     * @param owner der Besitzer für welchen der Feldwert berechnet werden soll
+     * @param own der Besitzer für welchen der Feldwert berechnet werden soll
      * @return der Feldwert
      */
-    private int getFieldScore(final int[][] matrix, final int column, final int owner) {
+    private int getFieldScore(final int[][] matrix, final int column, final int own) {
         int finalScore = 0;
-        int enemy = owner == 1 ? 2 : 1;
+        int enemy = own == 1 ? 2 : 1;
 
         //Vor dem Maximierenmieren prüfen auf Sieg
-        if (getScoreHorizontal(matrix, column, owner) >= 100000 || getScoreVertical(matrix, column, owner) >= 100000
-                || getScoreDiag1(matrix, column, owner) >= 100000 || getScoreDiag2(matrix, column, owner) >= 100000) {
+        if (getScoreHorizontal(matrix, column, own) >= 100000 || getScoreVertical(matrix, column, own) >= 100000
+                || getScoreDiag1(matrix, column, own) >= 100000 || getScoreDiag2(matrix, column, own) >= 100000) {
             return 1000000;
         }
 
         // Suche auf der horizontalen Ebene
-        finalScore += getScoreHorizontal(matrix, column, owner);
+        finalScore += getScoreHorizontal(matrix, column, own);
         finalScore -= getScoreHorizontal(matrix, column, enemy);
 
         // Suche auf der vertikalen Ebene
-        finalScore += getScoreVertical(matrix, column, owner);
+        finalScore += getScoreVertical(matrix, column, own);
         finalScore -= getScoreVertical(matrix, column, enemy);
 
         // Diagonale Suche
-        finalScore += getScoreDiag1(matrix, column, owner);
+        finalScore += getScoreDiag1(matrix, column, own);
         finalScore -= getScoreDiag1(matrix, column, enemy);
-        finalScore += getScoreDiag2(matrix, column, owner);
+        finalScore += getScoreDiag2(matrix, column, own);
         finalScore -= getScoreDiag2(matrix, column, enemy);
 
         return finalScore;
@@ -377,10 +375,10 @@ public class GameTreeNode implements Serializable {
      *
      * @param matrix die Matrix in der der Feldwert berechnet werden soll
      * @param column die Spalte in der der Feldwert berechnet werden soll
-     * @param owner
-     * @return 
+     * @param own der Besitzer für den der Feldwert berechnet wird
+     * @return der ermittelte Wert
      */
-    private int calcValue(int[][] matrix, int column, int owner) {
+    private int calcValue(final int[][] matrix, final int column, final int own) {
         int minvalue = 0;
         int maxvalue = 0;
 
@@ -409,7 +407,7 @@ public class GameTreeNode implements Serializable {
         } else {
             //Wenn auf der Untersten Ebene, dann bewerte Spielfeld
             if (knotentiefe % 2 == 0) {
-                return getFieldScore(matrix, column, owner);
+                return getFieldScore(matrix, column, own);
             } else {
                 return getFieldScore(matrix, column, enemy);
             }

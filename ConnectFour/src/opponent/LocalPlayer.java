@@ -35,7 +35,7 @@ public class LocalPlayer extends Opponent implements ActionListener {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                System.out.println(ex);
             }
         }
         return this.col;
@@ -59,7 +59,7 @@ public class LocalPlayer extends Opponent implements ActionListener {
      *
      */
     @Override
-    public void invalidMove() {
+    public final void invalidMove() {
         this.gameui.invalidMove();
     }
 
@@ -68,7 +68,7 @@ public class LocalPlayer extends Opponent implements ActionListener {
      *
      */
     @Override
-    public void youWin() {
+    public final void youWin() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
         this.gameui.youWin();
@@ -79,7 +79,7 @@ public class LocalPlayer extends Opponent implements ActionListener {
      *
      */
     @Override
-    public void youLose() {
+    public final void youLose() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
         this.gameui.youLose();
@@ -90,7 +90,7 @@ public class LocalPlayer extends Opponent implements ActionListener {
      *
      */
     @Override
-    public void draw() {
+    public final void draw() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
         this.gameui.draw();

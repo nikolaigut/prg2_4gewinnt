@@ -1,5 +1,6 @@
 package opponent.networkPlayer;
 
+import gameView.ConnectFourGui;
 import gameModel.GameModel;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.logging.Logger;
 public class ServerPlayer extends Opponent implements Observer {
     private transient ObjectOutputStream out;
     private transient BufferedReader in;
+    private transient ConnectFourGui gameui;
 
     /**
      * Erstellt einen neuen Server Spieler.
@@ -78,7 +80,7 @@ public class ServerPlayer extends Opponent implements Observer {
      */
     @Override
     public void invalidMove() {
-        //this.gameui.invalidMove();
+        this.gameui.invalidMove();
     }
 
     /**
@@ -87,9 +89,9 @@ public class ServerPlayer extends Opponent implements Observer {
      */
     @Override
     public void youWin() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.youWin();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.youWin();
     }
 
     /**
@@ -98,9 +100,9 @@ public class ServerPlayer extends Opponent implements Observer {
      */
     @Override
     public void youLose() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.youLose();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.youLose();
     }
 
     /**
@@ -109,8 +111,8 @@ public class ServerPlayer extends Opponent implements Observer {
      */
     @Override
     public void draw() {
-        //this.gameui.disableColumnButtons();
-        //this.gameui.disableSaveButton();
-        //this.gameui.draw();
+        this.gameui.disableColumnButtons();
+        this.gameui.disableSaveButton();
+        this.gameui.draw();
     }
 }

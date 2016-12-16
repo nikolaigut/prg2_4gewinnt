@@ -62,19 +62,17 @@ public class ClientPlayer implements ActionListener, Runnable {
             try {
                 GameModel tempModel = (GameModel) in.readObject();
                 tempModel.changePlayer();
-                /*
                 if (tempModel.getPlayerTwo().equals(tempModel.getCurrentPlayer())) {
                     this.clientGui.disableColumnButtons();
                 } else {
                     this.clientGui.enableColumnButtons();
                 }
-
                 this.clientGui.update(tempModel, null);
-
+                /**
                 if (tempModel.isInvalid()) {
                     this.clientGui.invalidMove();
-
                 }
+                */
                 if (tempModel.isDraw()) {
                     this.clientGui.draw();
                 }
@@ -84,7 +82,6 @@ public class ClientPlayer implements ActionListener, Runnable {
                 if (tempModel.isWon()) {
                     this.clientGui.youWin();
                 }
-                */
             } catch (IOException ex) {
                 System.out.println("IOException");
                 Logger.getLogger(ClientPlayer.class.getName()).log(Level.SEVERE, null, ex);
