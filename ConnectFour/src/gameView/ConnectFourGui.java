@@ -68,6 +68,54 @@ public class ConnectFourGui implements Observer {
         this.gameControl = gameControl;
         createFrame();
     }
+    
+    public void invalidMove() {
+        JOptionPane.showMessageDialog(null, "Dies ist ein Ungültiger Zug", "Ungültiger Zug", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void youWin() {
+        this.frame.revalidate();
+        this.frame.repaint();
+
+        JOptionPane.showMessageDialog(null, "Glückwunsch du hast gewonnen", "Gewonnen!!!", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void youLose() {
+        this.frame.revalidate();
+        this.frame.repaint();
+
+        JOptionPane.showMessageDialog(null, "Du hast leider verloren", "Verloren!!!", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void draw() {
+        this.frame.revalidate();
+        this.frame.repaint();
+
+        JOptionPane.showMessageDialog(null, "Das Spiel endet Unentschieden", "Unentschieden!!!", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public void disableColumnButtons() {
+        Component[] allButtons = playButton.getComponents();
+
+        for (Component button : allButtons) {
+            button.setEnabled(false);
+        }
+    }
+    
+    public void enableColumnButtons(){
+        Component[] allButtons = playButton.getComponents();
+         for (Component button : allButtons) {
+            button.setEnabled(true);
+        }
+    }
+    
+    public void disableSaveButton(){
+        this.save.setEnabled(false);
+    }
+    
+    public void enableSaveButton(){
+        this.save.setEnabled(true);
+    }
         
     // Frame erzeugen
     
