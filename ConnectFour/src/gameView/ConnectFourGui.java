@@ -12,6 +12,8 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import opponent.LocalPlayer;
+import opponent.Opponent;
 import opponent.networkPlayer.ClientThread;
 import opponent.networkPlayer.ServerThread;
 
@@ -403,6 +405,20 @@ public class ConnectFourGui implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         GameModel model = (GameModel) o;
+        
+        Opponent playerOne = model.getPlayerOne();
+        Opponent playerTwo = model.getPlayerTwo();
+        Opponent currentPlayer = model.getCurrentPlayer();
+        
+        if(currentPlayer.getId() != playerOne.getId()){
+            if(!(playerTwo instanceof LocalPlayer)){
+                disableColumnButtons();
+            }
+        }else{
+            if(!(playerTwo instanceof LocalPlayer)){
+                enableColumnButtons();
+            }
+        }
     }
     
 }
