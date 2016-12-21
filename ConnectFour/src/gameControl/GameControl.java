@@ -20,32 +20,23 @@ import opponent.networkPlayer.ServerPlayer;
 import util.GameMode;
 
 /**
- * This class is the control of the connect4 game
+ * This class is the control of the connect4 game.
  * @author Nikolai Strässle <nikolai.straessle@stud.hslu.ch>
  */
 
 public class GameControl implements Runnable {
 
-    
-
     private Thread game;
-
-    
     private ConnectFourGui gameUi;
-
-    
     private GameModel gameModel;
-
-    
     private static int networkPort;
+    private ActionListener actionListener;
 
-    
     public GameControl() {
         this.gameModel = new GameModel();
         this.gameUi = new ConnectFourGui(this);
     }
 
-    
     public void newGame(GameMode gameType) {
         interruptGameCycle();
         switch (gameType) {
@@ -60,7 +51,6 @@ public class GameControl implements Runnable {
         }
     }
 
-    
     public void saveGame(String path) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
@@ -90,7 +80,6 @@ public class GameControl implements Runnable {
         }
     }
 
-    
     public void loadGame(String path) {
         interruptGameCycle();
         FileInputStream fis = null;
@@ -124,7 +113,6 @@ public class GameControl implements Runnable {
         }
     }
 
-    
     public void createLoadGame(GameModel gameModel) {
         LocalPlayer playerOne = (LocalPlayer)gameModel.getPlayerOne();
         Opponent playerTwo = gameModel.getPlayerTwo();
@@ -143,36 +131,27 @@ public class GameControl implements Runnable {
         this.getGame().start();
     }
 
-    
     public void createLocalGame() {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
-        LocalPlayer playerTwo = new LocalPlayer(2, gameUi);
-        
+        LocalPlayer playerTwo = new LocalPlayer(2, gameUi);        
         this.gameModel.addObserver(gameUi);
-        ActionListener[] actionListeners = {playerOne, playerTwo};
-        
-        this.gameUi.addColumnButtonListener(actionListeners);
-        
+
         this.gameModel.init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
         this.getGame().start();
     }
 
-    
     public void createLocalComputerGame() {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
-        KIPlayer playerTwo = new KIPlayer(2, gameUi);
-        
+        KIPlayer playerTwo = new KIPlayer(2, gameUi, gameModel);
         this.gameModel.addObserver(gameUi);
         
-        
-        
+        this.gameUi.enableColumnButtons();
         this.gameModel.init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
         this.getGame().start();
     }
 
-    
     public void createServerGame(Socket clientSocket) {
         LocalPlayer playerOne = new LocalPlayer(1, this.gameUi);
         ServerPlayer playerTwo = new ServerPlayer(2, clientSocket);
@@ -189,23 +168,20 @@ public class GameControl implements Runnable {
         
         this.game = new Thread(this, "Server game");
         this.game.start();
-        
     }
 
-    
     public void createClientGame(Socket serverSocket) {
         ClientPlayer clientPlayer = new ClientPlayer(serverSocket, this.gameUi);
         this.gameUi.addColumnButtonListener(clientPlayer);
         this.gameUi.enableColumnButtons();
         this.gameUi.disableSaveButton();
-        
-        
     }
 
-    
+    @Override
     public void run() {
         int columnNr;
         while(!Thread.interrupted()){
+            prepareNextMove(this.gameModel.getCurrentPlayer());
             columnNr = this.gameModel.getCurrentPlayer().getNextMove();
             columnNr--;
             this.gameModel.insertDisc(columnNr);
@@ -222,13 +198,26 @@ public class GameControl implements Runnable {
             this.gameModel.notifyObservers();
         }
     }
-    
+
     private void interruptGameCycle() {
         // Game-Thread unterbrechen
         if (this.getGame() != null) {
             while (this.getGame().isAlive()) {
                 this.getGame().interrupt();
             }
+        }
+    }
+
+    /**
+     * Kreiert einen Listener für den gerade aktiven Spieler.
+     *
+     * @param player der aktive Spieler
+     */
+    private void prepareNextMove(Opponent player){
+        if (player instanceof LocalPlayer) {
+            actionListener = (LocalPlayer) player;
+            this.gameUi.addColumnButtonListener(actionListener);
+            this.gameUi.enableColumnButtons();
         }
     }
 
@@ -252,5 +241,4 @@ public class GameControl implements Runnable {
     public GameModel getGameModel() {
         return gameModel;
     }
-
 }

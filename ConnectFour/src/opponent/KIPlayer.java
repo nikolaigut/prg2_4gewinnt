@@ -13,6 +13,7 @@ import java.util.Observer;
 public class KIPlayer extends Opponent implements Observer {
     private int[][] matrix;
     private GameTree gametree;
+    private GameModel GameModel;
     private final transient ConnectFourGui gameui;
 
     /**
@@ -21,9 +22,10 @@ public class KIPlayer extends Opponent implements Observer {
      * @param id die ID des Computergegners
      * @param gameui Die Instanz des Spiels für den Spieler
      */
-    public KIPlayer(final int id, final ConnectFourGui gameui) {
+    public KIPlayer(final int id, final ConnectFourGui gameui, final GameModel model) {
         super(id);
         this.gameui = gameui;
+        this.GameModel = model;
     }
 
     /**
@@ -33,12 +35,13 @@ public class KIPlayer extends Opponent implements Observer {
      */
     @Override
     public final int getNextMove() {
+        this.matrix = GameModel.getGameMatrix();
         gametree = new GameTree(matrix, getId(), 5);
         return gametree.getNextmove();
     }
 
     /**
-     * Zeichnet das Spielfeld anhand des aktuellen Models neu.
+     * Aktualisiert das GameModel um die aktuelle Spielmatrix zu erhalten.
      *
      * @param o Observer vom Typ GameModel
      * @param arg Argumentobjekt

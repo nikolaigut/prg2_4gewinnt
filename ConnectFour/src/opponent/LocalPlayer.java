@@ -99,9 +99,9 @@ public class LocalPlayer extends Opponent implements ActionListener {
     /**
      * Kontrolliert ob ein Unentschieden erreicht wurde.
      *
-     * @param gameui die Instanz des Spiels
+     * @param gui die Instanz der Spielanzeige
      */
-    public final void setGameui(final ConnectFourGui gameui) {
-        this.gameui = gameui;
+    public final void setGameui(final ConnectFourGui gui) {
+        this.gameui = gui;
     }
 }

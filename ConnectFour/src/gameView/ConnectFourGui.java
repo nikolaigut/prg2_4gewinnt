@@ -271,7 +271,7 @@ public class ConnectFourGui implements Observer {
         playButton.add(this.column5);
         playButton.add(this.column6);
         playButton.add(this.column7);
-        
+        disableColumnButtons();
         playButton.setVisible(true);
         
         return playButton;
