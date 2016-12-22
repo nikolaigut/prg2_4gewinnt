@@ -56,7 +56,7 @@ public class GameTreeNode implements Serializable {
                 for (int i : validemoves) {
                     int[][] newmodel = new int[6][7];
 
-                    for (int row = 0; row < 6; row++) {
+                    for (int row = 5; row <= 0; row--) {
                         for (int column = 0; column < 7; column++) {
                             newmodel[row][column] = currentmodel[row][column];
                         }
@@ -176,7 +176,7 @@ public class GameTreeNode implements Serializable {
      * @return Wahrheitswert ob Zug valide ist
      */
     private boolean validateMove(final int[][] matrix, final int rowToInsert) {
-        return getRowToInsert(matrix, rowToInsert) > 0;
+        return getRowToInsert(matrix, rowToInsert) >= 0;
     }
 
     /**
@@ -200,10 +200,13 @@ public class GameTreeNode implements Serializable {
      * @return die Zeile des einzusetzenden Steines
      */
     private int getRowToInsert(final int[][] matrix, final int column) {
-        int rowToInsert = 5;
-        for (int i = 5; i >= 0; i--) {
+        int rowToInsert = -1;
+
+        for (int i = 0; i < 6; i++) {
             if (matrix[i][column] != 0) {
-                rowToInsert = i - 1;
+                rowToInsert++;
+            } else {
+                return i;
             }
         }
         return rowToInsert;
