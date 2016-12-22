@@ -80,7 +80,7 @@ public class ClientPlayer implements ActionListener, Runnable {
                     this.clientGui.youLose();
                 }
                 if (tempModel.isWon()) {
-                    this.clientGui.youWin();
+                    this.clientGui.youWin(2);
                 }
             } catch (IOException ex) {
                 System.out.println("IOException");

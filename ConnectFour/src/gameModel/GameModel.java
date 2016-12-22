@@ -48,6 +48,20 @@ public class GameModel extends Observable implements Serializable {
         this.columnLenght = 7;
         this.rowLenght = 6;
     }
+    
+    public void start(){
+        setChanged();
+        this.gameMatrix = null;
+        this.playerOne = null;
+        this.playerTwo = null;
+        this.currentPlayer = null;
+        this.draw = false;
+        this.lose = false;
+        this.won = false;
+        this.invalid = false;
+        this.gameMatrix = new int[this.rowLenght][this.columnLenght];
+        notifyObservers();
+    }
 
     
     public void init(Opponent playerOne, Opponent playerTwo) {
@@ -73,10 +87,10 @@ public class GameModel extends Observable implements Serializable {
     }
 
     
-    public void insertDisc(int columnNr) {
+    public void insertDisc(int columnNr) throws Exception {
         try {
             int row = getRowToInsert(columnNr);
-
+            checkInvalideMove(row, columnNr);
             setChanged();
             this.gameMatrix[row][columnNr] = this.currentPlayer.getId();
             notifyObservers();
@@ -84,7 +98,14 @@ public class GameModel extends Observable implements Serializable {
             checkState(row, columnNr);
         } catch (Exception ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
         }
+    }
+    
+    private void checkInvalideMove(int row, int column) throws Exception{
+        if(this.gameMatrix[row][column] != 0){
+                throw new Exception("Invalide move");
+            }
     }
 
     

@@ -91,7 +91,7 @@ public class ServerPlayer extends Opponent implements Observer {
     public void youWin() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
-        this.gameui.youWin();
+        this.gameui.youWin(1);
     }
 
     /**

@@ -21,9 +21,9 @@ import util.GameMode;
 
 /**
  * This class is the control of the connect4 game.
+ *
  * @author Nikolai Strässle <nikolai.straessle@stud.hslu.ch>
  */
-
 public class GameControl implements Runnable {
 
     private Thread game;
@@ -35,6 +35,11 @@ public class GameControl implements Runnable {
     public GameControl() {
         this.gameModel = new GameModel();
         this.gameUi = new ConnectFourGui(this);
+    }
+    
+    public void cleanUp(){
+        this.gameModel.start();
+        this.game.interrupt();
     }
 
     public void newGame(GameMode gameType) {
@@ -62,21 +67,21 @@ public class GameControl implements Runnable {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-           if(oos != null) {
-               try {
-                   oos.close();
-               } catch (IOException ex) {
-                   Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
-               }
-           }
-           if(fos != null){
-               try {
-                   fos.close();
-               } catch (IOException ex) {
-                   Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
-               }
-           }
+        } finally {
+            if (oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 
@@ -87,7 +92,7 @@ public class GameControl implements Runnable {
         try {
             fis = new FileInputStream(path);
             ois = new ObjectInputStream(fis);
-            GameModel loadedGameModel = (GameModel)ois.readObject();
+            GameModel loadedGameModel = (GameModel) ois.readObject();
             createLoadGame(loadedGameModel);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,15 +100,15 @@ public class GameControl implements Runnable {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(ois != null){
+        } finally {
+            if (ois != null) {
                 try {
                     ois.close();
                 } catch (IOException ex) {
                     Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(fis != null){
+            if (fis != null) {
                 try {
                     fis.close();
                 } catch (IOException ex) {
@@ -114,26 +119,26 @@ public class GameControl implements Runnable {
     }
 
     public void createLoadGame(GameModel gameModel) {
-        LocalPlayer playerOne = (LocalPlayer)gameModel.getPlayerOne();
+        LocalPlayer playerOne = (LocalPlayer) gameModel.getPlayerOne();
         Opponent playerTwo = gameModel.getPlayerTwo();
-        
+
         this.getGameModel().init(playerTwo, playerTwo, gameModel.getGameMatrix(), gameModel.getCurrentPlayer());
         this.getGameModel().addObserver(getGameUi());
-        
-        if(playerTwo instanceof KIPlayer){
-            KIPlayer kiPlayer = (KIPlayer)playerTwo;
-            
-        }else if(playerTwo instanceof LocalPlayer){
-            LocalPlayer loaclPlayer = (LocalPlayer)playerTwo;
+
+        if (playerTwo instanceof KIPlayer) {
+            KIPlayer kiPlayer = (KIPlayer) playerTwo;
+
+        } else if (playerTwo instanceof LocalPlayer) {
+            LocalPlayer loaclPlayer = (LocalPlayer) playerTwo;
         }
-        
+
         this.game = new Thread(this, "Run loaded game");
         this.getGame().start();
     }
 
     public void createLocalGame() {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
-        LocalPlayer playerTwo = new LocalPlayer(2, gameUi);        
+        LocalPlayer playerTwo = new LocalPlayer(2, gameUi);
         this.gameModel.addObserver(gameUi);
 
         this.gameModel.init(playerOne, playerTwo);
@@ -145,7 +150,7 @@ public class GameControl implements Runnable {
         LocalPlayer playerOne = new LocalPlayer(1, gameUi);
         KIPlayer playerTwo = new KIPlayer(2, gameUi, gameModel);
         this.gameModel.addObserver(gameUi);
-        
+
         this.gameUi.enableColumnButtons();
         this.gameModel.init(playerOne, playerTwo);
         this.game = new Thread(this, "Run local game");
@@ -155,17 +160,17 @@ public class GameControl implements Runnable {
     public void createServerGame(Socket clientSocket) {
         LocalPlayer playerOne = new LocalPlayer(1, this.gameUi);
         ServerPlayer playerTwo = new ServerPlayer(2, clientSocket);
-        
+
         this.gameModel.addObserver(gameUi);
         this.gameModel.addObserver(playerTwo);
-        
+
         this.gameUi.addColumnButtonListener(playerOne);
-        
+
         this.gameModel.init(playerOne, playerTwo);
-        
+
         this.gameUi.enableColumnButtons();
         this.gameUi.disableSaveButton();
-        
+
         this.game = new Thread(this, "Server game");
         this.game.start();
     }
@@ -180,22 +185,30 @@ public class GameControl implements Runnable {
     @Override
     public void run() {
         int columnNr;
-        while(!Thread.interrupted()){
+        while (!Thread.interrupted()) {
             prepareNextMove(this.gameModel.getCurrentPlayer());
             columnNr = this.gameModel.getCurrentPlayer().getNextMove();
             columnNr--;
-            this.gameModel.insertDisc(columnNr);
-            if(this.gameModel.isDraw()){
-                this.gameModel.getPlayerOne().draw();
-                this.gameModel.getPlayerTwo().draw();
-            }else if(this.gameModel.isWon()){
-                this.gameModel.getCurrentPlayer().youWin();
-            }else if(this.gameModel.isLose()){
-                this.gameModel.getCurrentPlayer().youLose();
-            }else{
-                this.gameModel.changePlayer();
+            try {
+                this.gameModel.insertDisc(columnNr);
+
+                if (this.gameModel.isDraw()) {
+                    this.gameModel.getPlayerOne().draw();
+                    this.gameModel.getPlayerTwo().draw();
+                    cleanUp();
+                } else if (this.gameModel.isWon()) {
+                    this.gameModel.getCurrentPlayer().youWin();
+                    cleanUp();
+                } else if (this.gameModel.isLose()) {
+                    this.gameModel.getCurrentPlayer().youLose();
+                    cleanUp();
+                } else {
+                    this.gameModel.changePlayer();
+                }
+                this.gameModel.notifyObservers();
+            } catch (Exception ex) {
+                   this.gameModel.getCurrentPlayer().invalidMove();
             }
-            this.gameModel.notifyObservers();
         }
     }
 
@@ -213,7 +226,7 @@ public class GameControl implements Runnable {
      *
      * @param player der aktive Spieler
      */
-    private void prepareNextMove(Opponent player){
+    private void prepareNextMove(Opponent player) {
         if (player instanceof LocalPlayer) {
             actionListener = (LocalPlayer) player;
             this.gameUi.addColumnButtonListener(actionListener);

@@ -69,7 +69,7 @@ public class KIPlayer extends Opponent implements Observer {
     public final void youWin() {
         this.gameui.disableColumnButtons();
         this.gameui.disableSaveButton();
-        this.gameui.youWin();
+        this.gameui.youWin(this.getId());
     }
 
     /**
