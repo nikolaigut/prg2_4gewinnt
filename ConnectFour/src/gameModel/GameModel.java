@@ -8,7 +8,7 @@ import opponent.Opponent;
 
 /**
  * This class will describe the game model
- * @author Nikolai Strässle <nikolai.straessle@stud.hslu.ch>
+ * @author Thomas Stadelmann <thomas.stadelmann.01@stud.hslu.ch>
  */
 
 public class GameModel extends Observable implements Serializable {
