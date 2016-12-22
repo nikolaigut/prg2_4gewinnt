@@ -18,6 +18,11 @@ import opponent.Opponent;
 import opponent.networkPlayer.ClientThread;
 import opponent.networkPlayer.ServerThread;
 
+/**
+ * 
+ * @author Matthias Gerzner <matthias.gerzner@stud.hslu.ch>
+ */
+
 public class ConnectFourGui implements Observer {
 
     // Attribute

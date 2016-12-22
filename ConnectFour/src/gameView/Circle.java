@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
+/**
+ * 
+ * @author Matthias Gerzner <matthias.gerzner@stud.hslu.ch>
+ */
+
 public class Circle extends JPanel {
 
     private int color;
